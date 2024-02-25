@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    stages {
+        stage('Git checkout') {
+            steps {
+                git 'https://github.com/thisisbbharat/STS--Demo.git'
+            }
+        }
+        stage('Build Jar') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        stage('Print Version') {
+            steps {
+                script {
+                    println "Version: ${version}"
+                }
+            }
+        }
+        stage('Build image') {
+            steps {
+                sh 'docker build -t demo:${version} .'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker run -d -p 80:8080 demo:${version}'
+            }
+        }
+    }
+}
