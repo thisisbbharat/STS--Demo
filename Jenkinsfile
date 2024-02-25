@@ -13,8 +13,8 @@ pipeline {
         }
         stage('Build image') {
             steps {
-                sh 'docker rm -f demo:v1'
-                sh 'docker rmi  demo:v1'
+                sh 'docker rm -f demo:v1 || true' 
+                sh 'docker rmi  demo:v1 || true'
                 sh 'docker build -t demo:v1 .'
             }
         }
